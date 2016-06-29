@@ -84,15 +84,16 @@ process_data <- function(base_folder)
  
   totals$id = NULL
   
- created_columns <- c("subject_id", "activity_name", "group")                        
+  created_columns <- c("subject_id", "activity_name", "group")                        
  
- my_names <- names(totals)
- splits <- split(totals, list(totals$subject_id, totals$activity_name))
+  my_names <- names(totals)
+  splits <- split(totals, list(totals$subject_id, totals$activity_name))
  
- num_splits <- length(splits)
- split_names <- names(splits)
+  num_splits <- length(splits)
+  split_names <- names(splits)
  
-  by_subject_by_activity <- ddply(har_totals, .(subject_id, activity_name), function(x) colMeans(x[,1:86]))
+  features_length = nrow(features)
+  by_subject_by_activity <- ddply(har_totals, .(subject_id, activity_name), function(x) colMeans(x[,1:features_length]))
  
   by_subject_by_activity$group <- NULL
   
