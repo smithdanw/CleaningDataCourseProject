@@ -1,6 +1,7 @@
 library(plyr)
 library(dplyr)
 
+# process sub_folder_name
 process_set <- function (base_folder, sub_folder_name, activity_labels, features){
   
   file_name <- paste("X_", sub_folder_name, ".txt", sep = "")
@@ -32,9 +33,12 @@ process_set <- function (base_folder, sub_folder_name, activity_labels, features
   test_set
 }
 
+# process entire folder
 process_data <- function(base_folder)
 {
   activity_labels <- read.table(paste(base_folder, "activity_labels.txt", sep = "/"), stringsAsFactors = F)
+  
+  #clean up the names
   features <- read.table(paste(base_folder, "features.txt", sep = "/"))
   features <- mutate(features, V2 = tolower(V2))
   matches <- data.frame(grep("mean|std", features$V2))
@@ -88,29 +92,8 @@ process_data <- function(base_folder)
  num_splits <- length(splits)
  split_names <- names(splits)
  
-  output <- apply(data.frame(my_names), 1, function(x){
-    if(!any(x == created_columns))
-    {
-      values <- lapply(splits, function(element){
-        df1 <- data.frame(element)
-        names(df1) <- my_names
-        mean(df1[,x])
-      })
-  
-      names(values) <- NULL
-      vec <- unlist(values)
-      vec
-    } else if (x == "subject_id"){
-       activity_name <- gsub("[.].*", "", split_names)
-    } else if (x == "activity_name"){
-       activity_name <- gsub(".*[.]", "", split_names)
-    } else{
-      rep(x = x, num_splits)
-    }
-  })
+  by_subject_by_activity <- ddply(har_totals, .(subject_id, activity_name), function(x) colMeans(x[,1:86]))
  
-  by_subject_by_activity <- data.frame(output)
-  names(by_subject_by_activity) <- my_names
   by_subject_by_activity$group <- NULL
   
   env <- globalenv()
