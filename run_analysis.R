@@ -93,7 +93,7 @@ process_data <- function(base_folder)
   split_names <- names(splits)
  
   features_length = nrow(features)
-  by_subject_by_activity <- ddply(har_totals, .(subject_id, activity_name), function(x) colMeans(x[,1:features_length]))
+  by_subject_by_activity <- ddply(totals, .(subject_id, activity_name), function(x) colMeans(x[,1:features_length]))
  
   by_subject_by_activity$group <- NULL
   
