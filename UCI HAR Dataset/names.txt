@@ -1,12 +1,6 @@
-# CODE BOOK
-This code book describes the output of the run_analysis.R file.
-
-## Columns
-Below are the values captures by the return value of process_data
-units of mean and std are those described in ./UCI HAR Dataset/features_info.txt
-
-1 subject_id: integer (1:30)
-2 activity_name: character
+column_name
+1 subject_id
+2 activity_name
 3 t_body_acc_mean_x
 4 t_body_acc_mean_y
 5 t_body_acc_mean_z
@@ -85,9 +79,4 @@ units of mean and std are those described in ./UCI HAR Dataset/features_info.txt
 78 f_body_bodygyro_mag_meanfreq
 79 f_body_bodygyro_jerk_mag_mean
 80 f_body_bodygyro_jerk_mag_std
-81 f_body_bodygyro_jerk_mag_meanfreq                
-
-## Variables
-Resulting variables are
-har_totals - the entire data set
-by_subject_by_activity - with the averages
+81 f_body_bodygyro_jerk_mag_meanfreq

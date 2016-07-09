@@ -41,8 +41,10 @@ process_data <- function(base_folder)
   #clean up the names
   features <- read.table(paste(base_folder, "features.txt", sep = "/"))
   features <- mutate(features, V2 = tolower(V2))
-  matches <- data.frame(grep("mean|std", features$V2))
-  names(matches) <- ("grep_result")
+  
+  matches <-grep("^[^a].*(mean|std)", features$V2)
+  matches <- data.frame(matches)
+  names(matches) <- c("grep_result")
   matches <- mutate(matches, keep = T)
   features <- merge(x = features, by.x = "V1", y = matches, by.y = "grep_result", all.x =  T)
   features <- filter(features, !is.na(keep) & keep == T)
@@ -92,9 +94,11 @@ process_data <- function(base_folder)
   num_splits <- length(splits)
   split_names <- names(splits)
  
-  features_length = nrow(features)
-  by_subject_by_activity <- ddply(totals, .(subject_id, activity_name), function(x) colMeans(x[,1:features_length]))
- 
+  features_length <- nrow(features)
+  column_count <- ncol(totals)
+  totals <- totals[, c((column_count - 2):column_count, 1:(column_count - 3))]
+  by_subject_by_activity <- ddply(totals, .(subject_id, activity_name), function(x) colMeans(x[,4:column_count]))
+  
   by_subject_by_activity$group <- NULL
   
   env <- globalenv()
