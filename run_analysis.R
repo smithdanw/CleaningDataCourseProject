@@ -104,6 +104,7 @@ process_data <- function(base_folder)
   env <- globalenv()
   env$har_totals <- totals
   env$by_subject_by_activity <- by_subject_by_activity
-  
+  write.table(by_subject_by_activity, file = "tidy.txt", row.names = F)
+  write.table(names(by_subject_by_activity), file = "names.txt")
   totals
 }
